@@ -1,0 +1,97 @@
+
+/* https://uigradients.com/#SandtoBlue */
+body{
+    background: #a3a3a1;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #a3a3a1, #323333);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #a3a3a1, #323333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #000000;
+    /* margin-top: 50%; */
+}
+
+.title{
+    /* font-family: 'Lobster', cursive;
+    font-family: 'Gotu', sans-serif;
+    font-family: 'Abel', sans-serif; 
+    font-family: 'Bree Serif', serif;
+    font-family: 'Tajawal', sans-serif;
+    font-family: 'Montserrat Subrayada', sans-serif;
+    font-family: 'Allerta Stencil', sans-serif;
+    font-family: 'Gruppo', cursive;
+    font-family: 'Baumans', cursive; */
+    /* font-family: 'Proza Libre', sans-serif; */
+    font-family: 'Lexend Zetta', sans-serif;
+    color: #000000;
+    margin-top: 25%;
+}
+
+.btn-primary-dms {
+    height:50px; 
+    width: 20%; 
+    margin-top: 25%; 
+    margin-bottom: 10%; 
+}
+
+.done{
+    text-decoration: line-through;
+    color : #cfcfcf;
+}
+
+.imgplayers{
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+
+.name{
+    color: #000000;
+    font-size: 70px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.p{
+    font-size: 17px;
+}
+
+.p2{
+    font-size: 15px;
+    font-style: italic;
+}
+
+.form-text{
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.label {
+    cursor: pointer;
+    /* Style as you please, it will become the visible UI component. */
+ }
+ 
+ #upload-photo {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+ }
+
+ .dropContainer{
+    width: auto;
+    height: 10px;
+    background-color: #a3a3a1;
+    margin-left: 30%;
+    position: absolute;
+    text-align: center;
+    font-style: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: xx-large;
+    padding-top: 100px;
+ }
+
+ .browse{
+    width: 100%;
+    height: 300px;
+    padding-top: 270px;
+    background-image: url("/static/img/drag.gif");
+    background-repeat: no-repeat, repeat;
+    background-size: cover;
+    background-position: center;
+ }

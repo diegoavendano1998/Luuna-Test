@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Cloud</title>
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="../../static/img/cloud.png" sizes="32x32">
+        {% include 'partials/_libraries.html' %}
+    </head>
+
+    <body>
+        {% include 'partials/_navbar.html' %}
+
+        
+        <section class="error">
+            <div class="container d-flex" style="height: 50rem;">
+                <div class="row align-items-start" style="margin: auto auto;">
+                    <div class="col-12">
+                        {% include 'partials/_alerts.html' %}
+                        <div class="card p-4 shadow border-dark">
+                            <form action="{{ url_for('auth.login')}}" method="POST">
+                                <h2>Login <i class="fa fa-user login-icon"></i></h2>
+                                <br>
+                        
+                                <div class="form-group">
+                                    <strong>{{ form.username.label }} </strong>
+                                    {{ form.username(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                    <strong>{{ form.password.label }}</strong>
+                                    {{ form.password(class="form-control") }}
+                                </div> 
+                                {{ form.next() }}
+                                <a href="{{ url_for('auth.forgotPassword')}}" style="margin-top: 1rem; margin-left: 4rem;">Olvide mi contraseña</a>
+                                <hr>
+                                <input class="btn btn-success btn-block" type="submit" value="Entrar">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <script>
+            // # crear el window para buscar el paramentro 
+            var params = new URLSearchParams(window.location.search)
+            // # Revisar que el parametro exista 
+            if(params.has("next"))
+                // # Cargar el valor de next en el form
+                document.getElementById("next").value = params.get("next")
+            console.log(document.getElementById("next").value)
+        </script>
+
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>    
+
+    </body>
+</html>
