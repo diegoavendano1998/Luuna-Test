@@ -12,13 +12,8 @@
         <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
             <i class="fas fa-list"></i> Productos </a>
         <div class="dash-nav-dropdown-menu">
-            <a href="chartjs.html" class="dash-nav-dropdown-item">Categoria 1</a>
-        </div>
-        <div class="dash-nav-dropdown-menu">
-            <a href="chartjs.html" class="dash-nav-dropdown-item">Categoria 2</a>
-        </div>
-        <div class="dash-nav-dropdown-menu">
-            <a href="chartjs.html" class="dash-nav-dropdown-item">Categoria 3</a>
+            <a href="{{ url_for('products.products') }}" class="dash-nav-dropdown-item">Productos</a>
+            <a href="{{ url_for('categories.categories') }}" class="dash-nav-dropdown-item">Categorias</a>
         </div>
     </div>
     <div class="dash-nav-dropdown ">

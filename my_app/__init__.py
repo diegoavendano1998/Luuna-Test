@@ -40,8 +40,10 @@ login_manager.init_app(app)
 # -------------------------- Start Blueprints --------------------------
 # ----------------------------------------------------------------------
 from my_app.modules.products.productsController import productsBP
+from my_app.modules.products.categoriesController import categoriesBP
 from my_app.modules.auth.authController import auth
 app.register_blueprint(productsBP)
+app.register_blueprint(categoriesBP)
 app.register_blueprint(auth)
 # ----------------------------------------------------------------------
 # -------------------------- End Blueprints --------------------------
@@ -52,6 +54,7 @@ app.register_blueprint(auth)
 # -------------------------- Start APIs --------------------------
 # ----------------------------------------------------------------------
 from my_app.modules.rest_api.product_api import product_view
+from my_app.modules.rest_api.category_api import category_view
 # ----------------------------------------------------------------------
 # -------------------------- End APIs --------------------------
 # ----------------------------------------------------------------------

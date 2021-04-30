@@ -11,42 +11,40 @@
                             <div class="spur-card-icon">
                                 <i class="fas fa-ellipsis-h"></i>
                             </div>
-                            <h3 class="spur-card-title"> Lista de productos </h3>
+                            <h3 class="spur-card-title"> Lista de categorías </h3>
                             <div class="spur-card-menu">
                                 <div class="dropdown show">
                                     <a class="spur-card-menu-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="{{ url_for('products.create') }}">Agregar producto</a>
+                                        <a class="dropdown-item" href="{{ url_for('categories.create') }}">Agregar categoría</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            {% from 'macro/_pagination.html' import m_pagination %}
-                            {% for product in products.items %}
+                            {% from 'macro/_paginationCategory.html' import m_paginationCategory %}
+                            {% for category in categories.items %}
                                 <section class="jumbotron pb-2 pt-2 {{ loop.cycle('bg-secondary','bg-light') }}">
                                     <div class="row flex">
                                         <div class="col-10">
                                         <h3 class="text-left">
-                                            <a class="{{ loop.cycle('text-light','text-dark') }}" href="#">{{ product['name'] }} <small class="font-weight-light font-italic h6 ml-4">SKU: {{ product['sku'] }}</small></a>
+                                            <a class="{{ loop.cycle('text-light','text-dark') }}" href="#">{{ category['name'] }}</a>
                                         </h3>
-                                        <h6 class="{{ loop.cycle('text-light','text-dark') }}" style="font-style: italic;">{{ product['category'].name }}</h6>
-                                        <h6 class="{{ loop.cycle('text-light','text-dark') }}" style="font-style: italic;">{{ product['brand'] }}</h6>
-                                        <h6 class="{{ loop.cycle('text-light','text-dark') }}" style="font-style: italic;">$ {{ product['price'] }}</h6>
+                                        <h6 class="{{ loop.cycle('text-light','text-dark') }}" style="font-style: italic;">{{ category['description'] }}</h6>
                                         </div>
                                         <div class="col-2 my-auto">
-                                        <a class="btn btn-primary rounded-lg mr-2" href="{{ url_for('products.update', id=product['id']) }}">
-                                            <i class="fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="Editar {{ product['name'] }}"></i>
+                                        <a class="btn btn-primary rounded-lg mr-2" href="{{ url_for('categories.update', id=category['id']) }}">
+                                            <i class="fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="Editar {{ category['name'] }}"></i>
                                         </a>
-                                        <button class="btn btn-danger rounded-lg mr-2" data-toggle="modal" data-target="#deleteModal" data-name="{{ product['name'] }}" data-id="{{ product['id'] }}">
-                                            <i class="fa fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="{{eliminar}} {{ product['name'] }}"></i>
+                                        <button class="btn btn-danger rounded-lg mr-2" data-toggle="modal" data-target="#deleteCategoryModal" data-name="{{ category['name'] }}" data-id="{{ category['id'] }}">
+                                            <i class="fa fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="{{eliminar}} {{ category['name'] }}"></i>
                                         </button>
                                         </div>
                                     </div>
                                 </section>
                             {% endfor %}
-                            {{ m_pagination(products) }}
+                            {{ m_paginationCategory(categories) }}
                         </div>
                     </div>
                 </div>

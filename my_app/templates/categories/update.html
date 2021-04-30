@@ -11,11 +11,7 @@
                             <h3 style="font-family: sans-serif; font-size: xx-large; font-weight: bold;">Agregar Producto</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ url_for('products.create') }}" method="POST" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <strong>{{ form.sku.label }} </strong>
-                                    {{ form.sku(class="form-control") }}
-                                </div>
+                            <form action="{{ url_for('categories.update', id=category.id)}}" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <strong>{{ form.name.label }} </strong>
                                     {{ form.name(class="form-control") }}
@@ -24,23 +20,7 @@
                                         <strong>{{ form.description.label }}</strong>
                                         {{ form.description(class="form-control") }}
                                 </div>
-                                <div class="form-group">
-                                        <strong>{{ form.brand.label }}</strong>
-                                        {{ form.brand(class="form-control") }}
-                                </div>
-                                <div class="form-group">
-                                        <strong>{{ form.price.label }}</strong>
-                                        {{ form.price(class="form-control") }}
-                                </div>
-                                <div class="form-group">
-                                        <strong>{{ form.category_id.label }}</strong>
-                                        {{ form.category_id(class="form-control") }}
-                                </div>
-                                <div class="form-group">
-                                        <strong>{{ form.category_id.label }}</strong>
-                                        {{ form.file(class="form-control") }}
-                                </div>
-                        
+                                
                         
                                 <br>
                                 <hr>

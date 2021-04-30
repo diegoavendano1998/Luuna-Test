@@ -8,11 +8,14 @@ class Category (db.Model):
     __tablename__ = 'categories'
     id              = db.Column (db.Integer, primary_key=True)
     name            = db.Column (db.String(200))
+    description     = db.Column (db.String(200))
     deleted         = db.Column (db.Integer)
     products        = db.relationship('Product', backref='category', lazy='select')
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, name, description, deleted):
+        self.name        = name
+        self.description = description
+        self.deleted     = 0
 
     # Psra que cuando traiga un category sea con el formato '[<Category 'category1'>, <Category 'category2'>]'
     def __repr__(self):
@@ -41,5 +44,6 @@ def checkCategoryName(contain=True):
 # Clase para formulario WTF
 class CategoryForm(FlaskForm):
     name = StringField('Nombre de la Categoría', validators=[InputRequired(),checkCategoryName(contain=False)])
+    description = StringField('Descripccion de la Categoría', validators=[InputRequired()])
     id = HiddenField('Id')
     #recaptcha = RecaptchaField()
