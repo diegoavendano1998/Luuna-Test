@@ -8,10 +8,14 @@ from flask_login import LoginManager
 app = Flask(__name__)
 app.secret_key = 'Secret Key'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://diego:Diegox10*@localhost/dms'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['UPLOAD_FOLDER'] = '/home/diego/webApps/DMS/static/img/uploads'
-app.config['UPLOAD_FOLDER'] = '/home/diego/Documents/DMS/static/img/uploads'
+
+
+
+
+#cargar las configuraciones, incliuyendo las de la bd
+app.config.from_object('configuration.DevelopmentConfig')
+ALLOWED_EXTENSION_FIELDS = set(['pdf','jpg','jpeg','png'])
+
 # # # # # DB instance # # # # #
 db = SQLAlchemy(app)
 # ######### Crear las tablas en la base de datos ##########

@@ -1,22 +1,21 @@
 class BaseConfig(object):
-    'Base configuracion'
+    'Base configuration'
     SECRET_KEY = 'Key'
     DEBUG = True
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:1234QWER@localhost:3306/pyalmacen'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Diegox10*@localhost:3306/dms'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Tiempo de expiracion del token
     WTF_CSRF_TIME_LIMIT = 2000
-    # RECAPTCHA_PUBLIC_KEY = '6Lf02a4ZAAAAANl94BBl3SMb8i_MMmwHzw27MF6e'
-    # RECAPTCHA_PRIVATE_KEY = '6Lf02a4ZAAAAAF7pkUFULzmOpKz7Iv71wgxt-Uc4'
-    BABEL_TRANSLATION_DIRECTORIES = r'C:\Users\Lenovo\Documents\Flask con Python 3 + integración con Vue y Bootstrap 4\flask\4 - flaskApp\flask_app\translations'
+    # BABEL_TRANSLATION_DIRECTORIES = r'C:\Users\Lenovo\Documents\Flask con Python 3 + integración con Vue y Bootstrap 4\flask\4 - flaskApp\flask_app\translations'
     USER_ENABLE_EMAIL = True
-    USER_APP_NAME = "Flask-User Admin" 
+    UPLOAD_FOLDER = r"/home/diego/Documents"
+    USER_APP_NAME = "Luuna Test"
 class ProductionConfig(BaseConfig):
-    'Produccion configuracion'
+    'Produccion configuration'
     DEBUG = False
 class DevelopmentConfig(BaseConfig):
-    'Desarrollo configuracion'
+    'Desarrollo configuration'
     DEBUG = True
     TESTING = False
     SECRET_KEY = 'Desarrollo key'

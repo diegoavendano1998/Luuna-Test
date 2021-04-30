@@ -1,0 +1,56 @@
+{% extends 'baseProducts.html' %}
+
+{% block container %}
+    <!-- -------------------------------- Start Content ----------------------------------------- -->
+    <main class="dash-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card spur-card">
+                        <div class="card-header">
+                            <h3 style="font-family: sans-serif; font-size: xx-large; font-weight: bold;">Agregar Producto</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ url_for('products.update', id=product.id)}}" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <strong>{{ form.sku.label }} </strong>
+                                    {{ form.sku(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                    <strong>{{ form.name.label }} </strong>
+                                    {{ form.name(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                        <strong>{{ form.description.label }}</strong>
+                                        {{ form.description(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                        <strong>{{ form.brand.label }}</strong>
+                                        {{ form.brand(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                        <strong>{{ form.price.label }}</strong>
+                                        {{ form.price(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                        <strong>{{ form.category_id.label }}</strong>
+                                        {{ form.category_id(class="form-control") }}
+                                </div>
+                                <div class="form-group">
+                                        <strong>{{ form.category_id.label }}</strong>
+                                        {{ form.file(class="form-control") }}
+                                </div>
+                        
+                        
+                                <br>
+                                <hr>
+                                <input class="btn btn-dark text-light btn-block" type="submit" value="Actualizar">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- -------------------------------- End  Content----------------------------------------- -->
+{% endblock %}

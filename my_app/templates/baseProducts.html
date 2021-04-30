@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    {% include 'partials/products/_headProducts.html' %}
+
+
+    <body>
+        <div class="dash">
+            <!-- -------------------------------- Start Navbar ----------------------------------------- -->
+            {% include 'partials/products/_navbarProducts.html' %}
+            <!-- -------------------------------- End Navbar ----------------------------------------- -->
+            
+            <div class="dash-app">
+                {% include 'partials/_alerts.html' %}
+                <!-- -------------------------------- Start Toolbar ----------------------------------------- -->
+                {% include 'partials/products/_toolbarProducts.html' %}
+                <!-- -------------------------------- End Toolbar ----------------------------------------- -->
+
+                <!-- -------------------------------- Start Content ----------------------------------------- -->
+                {% block container %}{% endblock %}
+                <!-- -------------------------------- End  Content----------------------------------------- -->
+
+
+            </div>
+        </div>
+
+
+        <!-- -------------------------------- Start Delete Modal ----------------------------------------- -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Borrar <span></span></h5>
+                    <buttoSn type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <p>Deseas borrar el producto?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <a href="#" id="deleteProduct" class="btn btn-danger">Eliminar</a>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- -------------------------------- End Delete Modal ----------------------------------------- -->
+
+
+        
+        
+        
+        <script>
+        window.onload = function(){
+            $('#deleteModal').on('show.bs.modal', function (event) {
+            console.log("delete");
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var name = button.data('name') // Referencia a la data
+            var id = button.data('id') // Referencia a la data
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
+            $("#deleteProduct").attr("href","/Luuna/delete-product/"+id)
+        })    
+        }
+        </script>
+        
+        
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="../../static/js/productos/spur.js"></script>
+    </body>
+</html>
