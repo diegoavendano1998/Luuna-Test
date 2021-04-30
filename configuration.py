@@ -3,11 +3,10 @@ class BaseConfig(object):
     SECRET_KEY = 'Key'
     DEBUG = True
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Diegox10*@localhost:3306/dms'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:*****@localhost:3306/dms'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Tiempo de expiracion del token
     WTF_CSRF_TIME_LIMIT = 2000
-    # BABEL_TRANSLATION_DIRECTORIES = r'C:\Users\Lenovo\Documents\Flask con Python 3 + integración con Vue y Bootstrap 4\flask\4 - flaskApp\flask_app\translations'
     USER_ENABLE_EMAIL = True
     UPLOAD_FOLDER = r"/home/diego/Documents"
     USER_APP_NAME = "Luuna Test"

@@ -30,6 +30,7 @@ class Product (db.Model):
         self.price          = price
         self.category_id    = category_id
         self.file           = file
+        self.deleted        = deleted
 
     # Psra que cuando traiga un producto sea con el formato '[<Product 'producto1'>, <Product 'producto2'>]'
     def __repr__(self):

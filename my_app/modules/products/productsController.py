@@ -10,6 +10,9 @@ from my_app.modules.products.model.Product import Product, ProductForm
 from my_app.modules.products.model.Category import Category, CategoryForm
 
 import os
+from requests.auth import HTTPBasicAuth
+import requests
+import json
 
 
 
@@ -21,6 +24,19 @@ productsBP = Blueprint('products',__name__)
 
 def check_extension_file(filename):
    return ('.' in filename and filename.lower().rsplit('.')[1] in ALLOWED_EXTENSION_FIELDS)
+
+
+@productsBP.route('/Luuna/test/')
+def get_data():
+    pDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
+    # GET
+    r = json.loads(requests.get('http://0.0.0.0:5000/api/products/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
+    # POST
+    # r = json.loads(requests.post('http://0.0.0.0:5000/api/products/',data=pDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
+    # print (r['code'])
+    print (r)
+    return str(r)
+
 
 
 
@@ -42,27 +58,31 @@ def create():
     if request.method == 'GET':
         return render_template('products/create.html', form=form) 
     elif form.validate_on_submit():
-        p = Product(request.form['sku'],request.form['name'],request.form['description'],request.form['brand'],request.form['price'],request.form['category_id'],"",0)
+        pDict = ({'sku':request.form['sku'],'name':request.form['name'],'description':request.form['description'],'brand':request.form['brand'],'price':request.form['price'],'category_id':request.form['category_id'],'deleted':0})
         # Validar extension del archivo
         if form.file.data:
             file = form.file.data
             if check_extension_file(file.filename):
                 filename= secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'],file.filename))
-                p.file = filename 
+                pDict["file"]=("some file")
             else:
                 flash('Archivo invalido (extensiones permitidas: jpg, jpeg, png, pdf)','danger')
                 return redirect(url_for('products.create'))
-        db.session.add(p)
-        db.session.commit()
-        flash('Producto guardado satisfactoriamente','success')
+        else:
+            pDict["file"]=("")
+        # Send request to API
+        r = json.loads(requests.post('http://0.0.0.0:5000/api/products/',data=pDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
+        if r['code'] == 200:
+            flash('Producto guardado satisfactoriamente','success')
+        else:
+            flash(r['message'],'danger')
+            return render_template('products/create.html',form=form) 
         return redirect(url_for('products.products'))
     if form.errors:
-        # Mostrar flash de error
+        # Show flash error
         flash(form.errors,'danger')
     return render_template('products/create.html',form=form) 
-
-
 
 
 # Edit product
@@ -82,26 +102,27 @@ def update(id):
         form.category_id.data = product.category_id
         form.file.data        = product.file
     elif form.validate_on_submit():
-        product               = Product.query.get_or_404(id)
-        product.sku           = form.sku.data
-        product.name          = form.name.data
-        product.description   = form.description.data
-        product.brand         = form.brand.data
-        product.price         = form.price.data
-        product.category_id   = form.category_id.data
+        pDict = ({'sku':request.form['sku'],'name':request.form['name'],'description':request.form['description'],'brand':request.form['brand'],'price':request.form['price'],'category_id':request.form['category_id'],'deleted':0})
         # Validar extension del archivo
         if form.file.data:
             file = form.file.data
             if check_extension_file(file.filename):
                 filename= secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'],file.filename))
-                product.file = filename
+                pDict["file"]=("some file")
             else:
                 flash('Archivo invalido (extensiones permitidas: jpg, jpeg, png, pdf)','danger')
-                return redirect(url_for('products.update',id=product.id))
-        db.session.add(product)
-        db.session.commit()
-        flash('Producto actualizado satisfactoriamente','success')
+                return redirect(url_for('products.create'))
+        else:
+            pDict["file"]=("")
+        
+        # Send request to API
+        r = json.loads(requests.put('http://0.0.0.0:5000/api/products/'+str(id),data=pDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
+        if r['code'] == 200:
+            flash('Producto actualizado satisfactoriamente','success')
+        else:
+            flash(r['message'],'danger')
+            return render_template('products/update.html', product=product, form=form)
         return redirect(url_for('products.products'))
     if form.errors:
         # Mostrar flash de error
@@ -113,12 +134,12 @@ def update(id):
 # Delete product
 @productsBP.route('/Luuna/delete-product/<int:id>')
 def delete(id):
-    product = Product.query.get_or_404(id)
-    # p = Product(product.sku,product.name,product.description,product.brand,product.price,product.category_id,"",product.created,1)
-    # db.session.add(p)
-    db.session.delete(product)
-    db.session.commit()
-    flash('Producto eliminado satisfactoriamente','success')
+    # Send request to API
+    r = json.loads(requests.delete('http://0.0.0.0:5000/api/products/'+str(id),auth = HTTPBasicAuth('luuna', 'test2021')).content)
+    if r['code'] == 200:
+        flash('Producto eliminado satisfactoriamente','success')
+    else:
+        flash(r['message'],'danger')
     return redirect(url_for('products.products'))
 
 
