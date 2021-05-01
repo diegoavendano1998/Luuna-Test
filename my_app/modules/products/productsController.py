@@ -27,7 +27,6 @@ productsBP = Blueprint('products',__name__)
 
 @app.errorhandler(401)
 def notAuthorized(e):
-    # note that we set the 401 status explicitly
     return render_template('handler/401.html'),401
 @app.errorhandler(413)
 def notAuthorized(e):
@@ -37,8 +36,6 @@ def notAuthorized(e):
 @login_required
 @check_admin
 def contstructor(code=1):
-    # if response.status_code == 401:
-    # print (current_user.username)
     pass
 
 
@@ -46,17 +43,6 @@ def contstructor(code=1):
 def check_extension_file(filename):
    return ('.' in filename and filename.lower().rsplit('.')[1] in ALLOWED_EXTENSION_FIELDS)
 
-
-@productsBP.route('/Luuna/test/')
-def get_data():
-    pDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
-    # GET
-    r = json.loads(requests.get('http://0.0.0.0:5000/api/products/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    # POST
-    # r = json.loads(requests.post('http://0.0.0.0:5000/api/products/',data=pDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    # print (r['code'])
-    print (r)
-    return str(r)
 
 
 
@@ -82,15 +68,14 @@ def products(page=1):
 # Create product
 @productsBP.route('/Luuna/create-product/', methods=['GET','POST'])
 def create():
-    form = ProductForm(meta={'csrf':False})#meta={'csrf':False}
+    form = ProductForm(meta={'csrf':False})
     categories = [(c.id,c.name) for c in Category.query.all()]
     form.category_id.choices = categories
-    # Mostrar los valores actuales en la vista del formulario
     if request.method == 'GET':
         return render_template('products/create.html', form=form) 
     elif form.validate_on_submit():
         pDict = ({'sku':request.form['sku'],'name':request.form['name'],'description':request.form['description'],'brand':request.form['brand'],'price':request.form['price'],'category_id':request.form['category_id'],'deleted':0})
-        # Validar extension del archivo
+        # Validate file extension
         if form.file.data:
             file = form.file.data
             if check_extension_file(file.filename):
@@ -111,7 +96,6 @@ def create():
             return render_template('products/create.html',form=form) 
         return redirect(url_for('products.products'))
     if form.errors:
-        # Show flash error
         flash(form.errors,'danger')
     return render_template('products/create.html',form=form) 
 
@@ -119,11 +103,11 @@ def create():
 # Edit product
 @productsBP.route('/Luuna/update-product/<int:id>', methods=['GET','POST'])
 def update(id):
-    form = ProductForm(meta={'csrf':False})#meta={'csrf':False}
+    form = ProductForm(meta={'csrf':False})
     categories = [(c.id,c.name) for c in Category.query.all()]
     form.category_id.choices = categories
     product = Product.query.get_or_404(id)
-    # Mostrar los valores actuales en la vista del formulario
+    # Set actual values to the form
     if request.method == 'GET':
         form.sku.data         = product.sku
         form.name.data        = product.name
@@ -134,7 +118,7 @@ def update(id):
         form.file.data        = product.file
     elif form.validate_on_submit():
         pDict = ({'sku':request.form['sku'],'name':request.form['name'],'description':request.form['description'],'brand':request.form['brand'],'price':request.form['price'],'category_id':request.form['category_id'],'deleted':0})
-        # Validar extension del archivo
+        # Validate file extension
         if form.file.data:
             file = form.file.data
             if check_extension_file(file.filename):
@@ -175,3 +159,16 @@ def delete(id):
 
 
     
+
+
+# # # # # # # # Test Block # # # # # # # #
+# @productsBP.route('/Luuna/test/')
+# def get_data():
+#     pDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
+#     # GET
+#     r = json.loads(requests.get('http://0.0.0.0:5000/api/products/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
+#     # POST
+#     # r = json.loads(requests.post('http://0.0.0.0:5000/api/products/',data=pDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
+#     # print (r['code'])
+#     print (r)
+#     return str(r)

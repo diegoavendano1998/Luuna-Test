@@ -1,11 +1,12 @@
 from flask.views import MethodView
 from flask import request, abort
 from flask_login import LoginManager, login_required, current_user
-# from werkzeug import abort
+
 from my_app.modules.products.model.Product import Product, ProductForm
 from my_app.modules.products.model.Alert import Alert
 from my_app.modules.rest_api.helper.request import responseJSON
 from my_app import app, db
+
 import json
 
 
@@ -97,7 +98,6 @@ class ProductAPI(MethodView):
             product = Product.query.get(id)
             if not product:
                 return responseJSON(None,"Parametros invalidos (id)",403)
-
             # NAME
             if not request.form:
                 return responseJSON(None,"Sin parametros (name)",403)
@@ -141,7 +141,6 @@ class ProductAPI(MethodView):
             except ValueError:
                 return responseJSON(None,"Parametros invalidos (category_id)",403)
 
-
             
             #Check for changes
             if product.sku != request.form['sku']:
@@ -183,7 +182,9 @@ class ProductAPI(MethodView):
             
         return responseJSON(None,"Id invalido",403)
 
-# Convertir query de sqlalchemy a JSON
+
+
+# Convert query of sqlalchemy to JSON
 def productToJSON(product: Product):
     return {
                 'id': product.id,
@@ -197,33 +198,31 @@ def productToJSON(product: Product):
                 'file': product.file
             }
 
-# Tambien se puede guarder en la base de datos
+
+
+
+# API credentials
 api_username="luuna"
 api_password="test2021"
 
-# Metodo para proteger API
+# Protect API
 def protectAPI(f):
     def productDecorated(*args,**kwargs):
         auth = request.authorization
-        # print (auth.username+","+api_username)
-        # print (auth.password+","+api_password)
         if api_username == auth.username and api_password == auth.password:
             return f(*args, **kwargs)
-        # Regresar error unauthorized
+        # Unauthorized
         return abort(401)
     return productDecorated
 
 
-### Rutas ###
-# product_view = ProductAPI.as_view('product_view')
+### Routes ###
+# product_view = ProductAPI.as_view('product_view') # Unprotected API
 product_view = protectAPI(ProductAPI.as_view('product_view'))
 # GET
 app.add_url_rule('/api/products/', view_func=product_view, methods=['GET','POST'])
 # CRUD
 app.add_url_rule('/api/products/<int:id>', view_func=product_view, methods=['GET','POST','PUT','DELETE'])
-# # POST
-# product_view = ProductAPI.as_view('product_view')
-# app.add_url_rule('/api/products', view_func=product_view, methods=['GET'])
-# # PUT
-# product_view = ProductAPI.as_view('product_view')
-# app.add_url_rule('/api/products', view_func=product_view, methods=['GET'])
+
+
+

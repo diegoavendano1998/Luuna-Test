@@ -1,10 +1,10 @@
-from flask import Blueprint, session, render_template, request, redirect, url_for, flash, get_flashed_messages
 from my_app.modules.auth.model.user import User, LoginForm, RegisterForm, ForgotPassword, Role, RolUser
 from my_app import db
-from flask_login import login_user, logout_user, current_user, login_required
 from my_app import login_manager
 
-import atexit
+from flask import Blueprint, session, render_template, request, redirect, url_for, flash, get_flashed_messages
+from flask_login import login_user, logout_user, current_user, login_required
+
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -12,19 +12,19 @@ import os
 
 auth = Blueprint('auth',__name__)
 
-
+# Load user for the others modules
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
 
 
-# Registrar usuario
+# Register new user
 @auth.route('/register', methods=['GET','POST'])
 def register():
     form = RegisterForm(meta={'csrf':False})
     if (request.method == "POST"):
         if form.validate_on_submit():
-            # Validar que el usuraio no exista
+            # Check if user exist
             if User.query.filter_by(username=form.username.data).first():
                 flash('El usuario ya existe','danger')
                 return redirect(url_for('auth.register'))
@@ -50,7 +50,7 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
-# Logear usuario
+# Login user
 @auth.route('/login/', methods=['GET','POST'])
 @auth.route('/login/<int:view>', methods=['GET','POST'])
 def login(view='1'):
@@ -65,7 +65,7 @@ def login(view='1'):
     if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
             password = User.query.filter_by(password=form.password.data).first()
-            # Validar credenciales
+            # Validate Credentials
             if user and password:
                 login_user(user)
                 flash('Bienvenido '+user.username,'success')
@@ -85,13 +85,14 @@ def login(view='1'):
     return render_template(template, form=form)
      
 
-# Cerrar session del usuario
+# Logout user
 @auth.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
 
+# Send mail for password recovery
 def SendMail(reciver,passwd):
         sender_email = "*********@gmail.com"
         receiver_email = reciver
@@ -119,22 +120,22 @@ def SendMail(reciver,passwd):
 
     
 
-# Recuperar contraseña
+# Password Recovery
 @auth.route('/forgot', methods=['GET','POST'])
 @auth.route('/forgot')
 def forgotPassword():
     form = ForgotPassword(meta={'csrf':False})
     if (request.method == "POST"):
         if form.validate_on_submit():
-            # Validar que el usuraio no exista
+            # Check if user exist
             if User.query.filter_by(username=form.username.data).first():
-                # try:
-                user = User.query.filter_by(username=form.username.data).first()
-                SendMail(user.email,user.password)
-                flash('Correo de recuperacion enviado','success')
-                return redirect(url_for('auth.forgotPassword'))
-                # except:
-                #     flash('Por favor, intentalo mas tarde','danger')
+                try:
+                    user = User.query.filter_by(username=form.username.data).first()
+                    SendMail(user.email,user.password)
+                    flash('Correo de recuperacion enviado','success')
+                    return redirect(url_for('auth.forgotPassword'))
+                except:
+                    flash('Por favor, intentalo mas tarde','danger')
 
             elif User.query.filter_by(email=form.username.data).first():
                 flash('Correo de recuperacion enviado','success')

@@ -1,9 +1,10 @@
 from flask.views import MethodView
 from flask import request, abort
-# from werkzeug import abort
+
 from my_app.modules.products.model.Category import Category, Category
 from my_app.modules.rest_api.helper.request import responseJSON
 from my_app import app, db
+
 import json
 
 
@@ -40,7 +41,6 @@ class CategoryAPI(MethodView):
         if len(request.form['description']) < 1:
             return responseJSON(None,"Descripcción invalida",403)
         
-
         # Add category
         c = Category(request.form['name'],request.form['description'],0)
         db.session.add(c)
@@ -54,7 +54,6 @@ class CategoryAPI(MethodView):
             category = Category.query.get(id)
             if not category:
                 return responseJSON(None,"Parametros invalidos (id)",403)
-
             # NAME
             if not request.form:
                 return responseJSON(None,"Sin parametros (name)",403)
@@ -69,7 +68,7 @@ class CategoryAPI(MethodView):
             if len(request.form['description']) < 1:
                 return responseJSON(None,"Descripcción invalida",403)
 
-            # Crear categoria
+            # Create category
             category.name        = request.form['name']
             category.description = request.form['description']
             db.session.add(category)
@@ -91,7 +90,7 @@ class CategoryAPI(MethodView):
         return responseJSON(None,"Id invalido",403)
 
 
-# Convertir query de sqlalchemy a JSON
+# Convert query of sqlalchemy to JSON
 def categoryToJSON(category: Category):
     return {
                 'id': category.id,
@@ -99,33 +98,28 @@ def categoryToJSON(category: Category):
                 'description': category.description
             }
 
-# Tambien se puede guarder en la base de datos
+
+
+# API credentials
 api_username="luuna"
 api_password="test2021"
 
-# Metodo para proteger API
+# Protect API
 def protectAPI(f):
     def categoryDecorated(*args,**kwargs):
         auth = request.authorization
-        # print (auth.username+","+api_username)
-        # print (auth.password+","+api_password)
         if api_username == auth.username and api_password == auth.password:
             return f(*args, **kwargs)
-        # Regresar error unauthorized
+        # Unauthorized
         return abort(401)
     return categoryDecorated
 
 
-### Rutas ###
-# category_view = CategoryAPI.as_view('category_view')
+### Routes ###
+# category_view = CategoryAPI.as_view('category_view') # Unprotected API
 category_view = protectAPI(CategoryAPI.as_view('category_view'))
 # GET
 app.add_url_rule('/api/categories/', view_func=category_view, methods=['GET','POST'])
 # CRUD
 app.add_url_rule('/api/categories/<int:id>', view_func=category_view, methods=['GET','POST','PUT','DELETE'])
-# # POST
-# category_view = CategoryAPI.as_view('category_view')
-# app.add_url_rule('/api/categories', view_func=category_view, methods=['GET'])
-# # PUT
-# category_view = CategoryAPI.as_view('category_view')
-# app.add_url_rule('/api/categories', view_func=category_view, methods=['GET'])
+

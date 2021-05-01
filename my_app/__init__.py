@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_login import login_required, current_user
+
 from functools import wraps
 
 # ----------------------------------------------------------------------
@@ -12,9 +13,7 @@ app.secret_key = 'Secret Key'
 
 
 
-
-
-#cargar las configuraciones, incliuyendo las de la bd
+# Load the configurations from 'configuration.py'
 app.config.from_object('configuration.DevelopmentConfig')
 ALLOWED_EXTENSION_FIELDS = set(['pdf','jpg','jpeg','png'])
 

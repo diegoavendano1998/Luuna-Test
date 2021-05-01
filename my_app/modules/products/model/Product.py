@@ -1,13 +1,16 @@
 from my_app import db
-# Importaciones para WTF
+
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, DecimalField, SelectField
 from wtforms.validators import InputRequired, NumberRange
+
 from sqlalchemy import Column, Integer, DateTime
 
 from decimal import Decimal
 from datetime import datetime
+
+
 
 class Product (db.Model):
     __tablename__ = 'products'
@@ -32,10 +35,9 @@ class Product (db.Model):
         self.file           = file
         self.deleted        = deleted
 
-    # Psra que cuando traiga un producto sea con el formato '[<Product 'producto1'>, <Product 'producto2'>]'
+    # '[<Product 'producto1'>, <Product 'producto2'>]'
     def __repr__(self):
         return '<Product %r>' %(self.name)
-        #return '<Product %d>' %(self.id)
 
     @property
     def serialize(self):
@@ -45,7 +47,7 @@ class Product (db.Model):
             'name': self.name 
         }
 
-# Clase para formulario WTF
+# Product Form
 class ProductForm(FlaskForm):
     sku                 = StringField('SKU del Producto', validators=[InputRequired()])
     name                = StringField('Nombre del Producto', validators=[InputRequired()])

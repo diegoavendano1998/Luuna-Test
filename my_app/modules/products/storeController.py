@@ -23,7 +23,6 @@ storeBP = Blueprint('store',__name__)
 
 @app.errorhandler(401)
 def notAuthorized(e):
-    # note that we set the 401 status explicitly
     return render_template('handler/401.html'),401
 @app.errorhandler(413)
 def notAuthorized(e):
@@ -32,8 +31,6 @@ def notAuthorized(e):
 @storeBP.before_request
 @login_required
 def contstructor(code=1):
-    # if response.status_code == 401:
-    # print (current_user.username)
     pass
 
 
@@ -48,6 +45,7 @@ def store():
 @storeBP.route('/Luuna/store/<int:id>')
 def show(id):
     p = Product.query.get_or_404(id)
+    # Add to tracking the request
     track = Track(current_user.id,str(current_user.username),id,p.name)
     db.session.add(track)
     db.session.commit()

@@ -1,9 +1,10 @@
 from flask.views import MethodView
 from flask import request, abort
-# from werkzeug import abort
+
 from my_app.modules.auth.model.user import User
 from my_app.modules.rest_api.helper.request import responseJSON
 from my_app import app, db
+
 import json
 
 
@@ -49,7 +50,6 @@ class UserAPI(MethodView):
             return responseJSON(None,"Parametros invalidos (email)",403)
         if len(request.form['email']) < 1:
             return responseJSON(None,"Email invalida",403)   
-        
 
         # Add user
         u = User(request.form['username'],request.form['password'],request.form['rol'],request.form['email'])
@@ -63,7 +63,6 @@ class UserAPI(MethodView):
             u = User.query.get(id)
             if not u:
                 return responseJSON(None,"Parametros invalidos (id)",403)
-
             # NAME
             if not request.form:
                 return responseJSON(None,"Sin parametros",403)
@@ -87,9 +86,8 @@ class UserAPI(MethodView):
                 return responseJSON(None,"Parametros invalidos (email)",403)
             if len(request.form['email']) < 1:
                 return responseJSON(None,"Email invalida",403)   
-
             
-            # Crear producto
+            # Create user
             u.username        = request.form['username']
             u.password        = request.form['password']
             u.rol             = request.form['rol']
@@ -115,7 +113,7 @@ class UserAPI(MethodView):
 
     
 
-# Convertir query de sqlalchemy a JSON
+# Convert query of sqlalchemy to JSON
 def userToJSON(user: User):
     return {
                 'id': user.id,
@@ -124,33 +122,31 @@ def userToJSON(user: User):
                 'rol': user.rol
             }
 
-# Tambien se puede guarder en la base de datos
+
+
+
+
+# API credentials
 api_username="luuna"
 api_password="test2021"
 
-# Metodo para proteger API
+# Protect API
 def protectAPI(f):
     def userDecorated(*args,**kwargs):
         auth = request.authorization
-        # print (auth.username+","+api_username)
-        # print (auth.password+","+api_password)
         if api_username == auth.username and api_password == auth.password:
             return f(*args, **kwargs)
-        # Regresar error unauthorized
+        # Unauthorized
         return abort(401)
     return userDecorated
 
 
-### Rutas ###
-# user_view = UserAPI.as_view('user_view')
+### Routes ###
+# user_view = UserAPI.as_view('user_view') # Unprotected API
 user_view = protectAPI(UserAPI.as_view('user_view'))
 # GET
 app.add_url_rule('/api/users/', view_func=user_view, methods=['GET','POST'])
 # CRUD
 app.add_url_rule('/api/users/<int:id>', view_func=user_view, methods=['GET','POST','PUT','DELETE'])
-# # POST
-# user_view = UserAPI.as_view('user_view')
-# app.add_url_rule('/api/users', view_func=user_view, methods=['GET'])
-# # PUT
-# user_view = UserAPI.as_view('user_view')
-# app.add_url_rule('/api/users', view_func=user_view, methods=['GET'])
+
+

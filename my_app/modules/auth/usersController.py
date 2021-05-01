@@ -1,4 +1,4 @@
-from my_app import app,db
+from my_app import app,db,check_admin
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Blueprint
 from flask_login import login_required, current_user
 
@@ -20,36 +20,21 @@ import json
 
 usersBP = Blueprint('users',__name__)
 
-
+# Exceptions Handlers
 @app.errorhandler(401)
 def notAuthorized(e):
-    # note that we set the 401 status explicitly
     return render_template('handler/401.html'),401
 @app.errorhandler(413)
 def notAuthorized(e):
     return render_template('handler/413.html'),413
 
+
+
 @usersBP.before_request
 @login_required
+@check_admin
 def contstructor(code=1):
-    # if response.status_code == 401:
-    # print (current_user.username)
     pass
-
-
-
-@usersBP.route('/Luuna/test/')
-def get_data():
-    uDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
-    # GET
-    r = json.loads(requests.get('http://0.0.0.0:5000/api/users/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    # POST
-    # r = json.loads(requests.post('http://0.0.0.0:5000/api/users/',data=uDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    # print (r['code'])
-    print (r)
-    return str(r)
-
-
 
 
 # List all users
@@ -94,7 +79,7 @@ def update(id):
     user = User.query.get_or_404(id)
     roles = [(r.id,r.name) for r in Role.query.all()]
     form.rol.choices = roles
-    # Mostrar los valores actuales en la vista del formulario
+    # Create form with actual values
     if request.method == 'GET':
         form.username.data        = user.username
         form.password.data        = user.password
@@ -134,3 +119,15 @@ def delete(id):
 
 
     
+# # # # # # # # Test Block # # # # # # # #
+# @usersBP.route('/Luuna/test/')
+# def get_data():
+#     uDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
+#     # GET
+#     r = json.loads(requests.get('http://0.0.0.0:5000/api/users/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
+#     # POST
+#     # r = json.loads(requests.post('http://0.0.0.0:5000/api/users/',data=uDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
+#     # print (r['code'])
+#     print (r)
+#     return str(r)
+

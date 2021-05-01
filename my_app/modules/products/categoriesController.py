@@ -24,7 +24,6 @@ categoriesBP = Blueprint('categories',__name__)
 
 @app.errorhandler(401)
 def notAuthorized(e):
-    # note that we set the 401 status explicitly
     return render_template('handler/401.html'),401
 @app.errorhandler(413)
 def notAuthorized(e):
@@ -33,23 +32,7 @@ def notAuthorized(e):
 @categoriesBP.before_request
 @login_required
 def contstructor(code=1):
-    # if response.status_code == 401:
-    # print (current_user.username)
     pass
-
-
-
-@categoriesBP.route('/Luuna/test/')
-def get_data():
-    cDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
-    # GET
-    r = json.loads(requests.get('http://0.0.0.0:5000/api/categories/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    # POST
-    # r = json.loads(requests.post('http://0.0.0.0:5000/api/categories/',data=cDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    # print (r['code'])
-    print (r)
-    return str(r)
-
 
 
 
@@ -79,7 +62,6 @@ def create():
             return render_template('categories/create.html',form=form) 
         return redirect(url_for('categories.categories'))
     if form.errors:
-        # Show flash error
         flash(form.errors,'danger')
     return render_template('categories/create.html',form=form) 
 
@@ -89,7 +71,7 @@ def create():
 def update(id):
     form = CategoryForm(meta={'csrf':False})
     category = Category.query.get_or_404(id)
-    # Mostrar los valores actuales en la vista del formulario
+    # Set actual values to the form
     if request.method == 'GET':
         form.name.data        = category.name
         form.description.data = category.description
@@ -104,7 +86,6 @@ def update(id):
             return render_template('categories/update.html', category=category, form=form)
         return redirect(url_for('categories.categories'))
     if form.errors:
-        # Mostrar flash de error
         flash(form.errors,'danger')
 
     return render_template('categories/update.html', category=category, form=form)
@@ -128,3 +109,14 @@ def delete(id):
 
 
     
+# # # # # # # # Test Block # # # # # # # #
+# @categoriesBP.route('/Luuna/test/')
+# def get_data():
+#     cDict = ({'sku':'0000','name':'test','description':'test desc','brand':'test brand','price':44,'category_id':2,'file':"",'deleted':0})
+#     # GET
+#     r = json.loads(requests.get('http://0.0.0.0:5000/api/categories/',auth = HTTPBasicAuth('luuna', 'test2021')).content)
+#     # POST
+#     # r = json.loads(requests.post('http://0.0.0.0:5000/api/categories/',data=cDict,auth = HTTPBasicAuth('luuna', 'test2021')).content)
+#     # print (r['code'])
+#     print (r)
+#     return str(r)

@@ -1,9 +1,8 @@
 import json
 
 
-# Enviar respuesta JSON
+# Send custom JSON response
 def responseJSON(data, message, code):
-    # Preguntar por el codigo
     if code != 200:
         return json.dumps(
             {
