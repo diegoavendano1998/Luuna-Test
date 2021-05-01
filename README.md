@@ -17,7 +17,6 @@ El proyecto esta desarrollado con el lenguaje Python y utiliza como framework Fl
 
 
 
-
 ## Instalación
 Despues de descargar o clonar el proyecto es recomendable crear un entorno virtual de Python 3 utilizando venv o Pipenv.
 ```sh
@@ -42,36 +41,52 @@ Ya puedes empezar a navegar y si es necesario iniciar sesion con el usuario que 
 
 ## Docker
 
-Dillinger is very easy to install and deploy in a Docker container.
-
-By default, the Docker will expose port 8080, so change this within the
-Dockerfile if necessary. When ready, simply use the Dockerfile to
-build the image.
+Para contener la aplicacion dentro de un servicio de Docker, se debe crear un Dockerfile como el siguiente:
 
 ```sh
-cd dillinger
-docker build -t <youruser>/dillinger:${package.json.version} .
+FROM python:3.6-stretch
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+EXPOSE 5000
+ENTRYPOINT [ "python3" ]
+CMD [ "app.py" ]
 ```
 
-This will create the dillinger image and pull in the necessary dependencies.
-Be sure to swap out `${package.json.version}` with the actual
-version of Dillinger.
+Esto instalara las librerias necesarias y le dira a Docker que corra la aplicación por el puerto 5000.
+> Note: `python 3.6` recomendado para evitar confictos con librerias.
 
-Once done, run the Docker image and map the port to whatever you wish on
-your host. In this example, we simply map port 8000 of the host to
-port 8080 of the Docker (or whatever port was exposed in the Dockerfile):
-
+Para crear la imagen:
 ```sh
-docker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger <youruser>/dillinger:${package.json.version}
+docker image build -t luuna-image .
 ```
-
-> Note: `--capt-add=SYS-ADMIN` is required for PDF rendering.
-
-Verify the deployment by navigating to your server address in
-your preferred browser.
+Docker compose:
+```sh
+version: "2"
+services:
+    app:
+        build: ./app
+        links:
+        - db
+        ports:
+        - "5000:5000"
+    db:
+        image: mysql:5.7
+        ports:
+          - "32000:3306"
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+        volumes:
+          - ./db:/docker-entrypoint-initdb.d/:ro
+```
+Por ultimo iniciamos el contenedor:
+```sh
+sudo docker run --name luuna-image -p 5001:5000 luuna-image
+```
+Verificamos el despliegue en el navegador
 
 ```sh
-127.0.0.1:8000
+0.0.0.0:5000/Luuna/products
 ```
 
 
@@ -114,11 +129,16 @@ Las librerias utilizadas son :
 - zipp==3.4.1
 
 
+## Proyecto desplegado
+Para ver el proyecto desplegado puedes entrar a la url: http://diegoab.ddns.net/Luuna/store/
+Usuarios:
+- username : admin-luuna , password : ZeBrands$
+- username : regular-luuna , password : ZeBrands$
 
 
+#
 ## License
 
 Diego Avendaño, 2021
 
 **Free Software, Hell Yeah!**
-
