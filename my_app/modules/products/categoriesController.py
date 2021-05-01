@@ -1,4 +1,4 @@
-from my_app import app,db,ALLOWED_EXTENSION_FIELDS
+from my_app import app,db,ALLOWED_EXTENSION_FIELDS,check_admin
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Blueprint
 from flask_login import login_required, current_user
 
@@ -31,6 +31,7 @@ def notAuthorized(e):
 
 @categoriesBP.before_request
 @login_required
+@check_admin
 def contstructor(code=1):
     pass
 

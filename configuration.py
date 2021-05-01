@@ -3,7 +3,7 @@ class BaseConfig(object):
     SECRET_KEY = 'Key'
     DEBUG = True
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:*****@localhost:3306/dms'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:*******@localhost:3306/luunatest'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Tiempo de expiracion del token
     WTF_CSRF_TIME_LIMIT = 2000
