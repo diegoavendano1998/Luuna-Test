@@ -1,0 +1,18 @@
+{% extends 'baseProducts.html' %}
+
+{% block container %}
+
+        <section class="error">
+            <div class="container d-flex">
+                <div class="row justify-content-center mt-5">
+                        <h1 class="display-3 my-5 pt-5 text-primary">401 Unauthorized</h1>
+                    <div class="col-12 offset-lg-4 mb-5">
+                        <h1 class="display-5 my-2 pt-5 font-italic text-muted">Unete al lado oscuro</h1>
+                        <img src="../../static/img/join_dark_side.gif" alt="Fire" class="img-fluid m-auto img-thumbnail shadow-lg border-dark rounded" width="700">
+                    </div>
+                    <a href="{{url_for('auth.login',view='0')}}" class="btn btn-dark m-2 m-md-5">Iniciar Sesion</a>
+                    <a href="{{url_for('auth.register')}}" class="btn btn-dark m-2 m-md-5">Registrame</a>
+                </div>
+            </div>
+        </section>
+{% endblock %}

@@ -51,8 +51,13 @@ def register():
 
 
 # Logear usuario
-@auth.route('/login', methods=['GET','POST'])
-def login():
+@auth.route('/login/', methods=['GET','POST'])
+@auth.route('/login/<int:view>', methods=['GET','POST'])
+def login(view='1'):
+    if view == 1:
+        template = "auth/login.html"
+    else:
+        template = "auth/loginProducts.html"
     if current_user.is_authenticated:
         flash('Sesion actual activa','danger')
         return redirect (url_for('cld.index'))
@@ -68,14 +73,17 @@ def login():
                 # Revisar que la ruta de redireccoin sea segura
                 # if not is_safe_url(next):
                 #     return abort(400)
-                return redirect (next or url_for('cld.index'))
+                if view == 1:
+                    return redirect (next or url_for('cld.index'))
+                return redirect (next or url_for('store.store'))
             else:
                 flash(u'El usuario no existe o la contraseña es incorrecta','danger')
-                return render_template('auth/login.html', form=form)   
+                return render_template(template, form=form)   
     if form.errors:
         flash(form.errors,'danger')
 
-    return render_template('auth/login.html', form=form) 
+    return render_template(template, form=form)
+     
 
 # Cerrar session del usuario
 @auth.route('/logout')
@@ -85,9 +93,9 @@ def logout():
 
 
 def SendMail(reciver,passwd):
-        sender_email = "diegoavendano1998a@gmail.com"
+        sender_email = "*********@gmail.com"
         receiver_email = reciver
-        password = "th4t$ Life"
+        password = "*******"
         message = MIMEMultipart("alternative")
         message["Subject"] = "My cloud: Recuperacion Contraseña"
         message["From"] = sender_email
@@ -132,7 +140,7 @@ def forgotPassword():
                 flash('Correo de recuperacion enviado','success')
                 return redirect(url_for('auth.forgotPassword'))
             else:
-                flash('El userio o correo no estan registrados','danger')
+                flash('El usuario o correo no estan registrados','danger')
                 return redirect(url_for('auth.forgotPassword'))
     return render_template('auth/forgotPassword.html', form=form)
 

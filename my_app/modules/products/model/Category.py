@@ -9,7 +9,7 @@ class Category (db.Model):
     id              = db.Column (db.Integer, primary_key=True)
     name            = db.Column (db.String(200))
     description     = db.Column (db.String(200))
-    deleted         = db.Column (db.Integer)
+    deleted         = db.Column (db.Integer,default=0)
     products        = db.relationship('Product', backref='category', lazy='select')
 
     def __init__(self, name, description, deleted):

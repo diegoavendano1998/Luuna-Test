@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_login import login_required, current_user
+from functools import wraps
 
 # ----------------------------------------------------------------------
 # -------------------------- Start App Configs -------------------------
@@ -30,7 +32,13 @@ login_manager.init_app(app)
 # ----------------------------------------------------------------------
 # -------------------------- End App Configs ---------------------------
 # ----------------------------------------------------------------------
-
+def check_admin(f):
+    @wraps(f)
+    def wrapper(*args, **kwds):
+        if str(current_user.rol).find("admin") < 0:
+            return render_template('handler/not_authorized.html')
+        return f(*args, **kwds)
+    return wrapper
 
 
 
@@ -42,10 +50,12 @@ login_manager.init_app(app)
 from my_app.modules.products.productsController import productsBP
 from my_app.modules.products.categoriesController import categoriesBP
 from my_app.modules.auth.usersController import usersBP
+from my_app.modules.products.storeController import storeBP
 from my_app.modules.auth.authController import auth
 app.register_blueprint(productsBP)
 app.register_blueprint(categoriesBP)
 app.register_blueprint(usersBP)
+app.register_blueprint(storeBP)
 app.register_blueprint(auth)
 # ----------------------------------------------------------------------
 # -------------------------- End Blueprints --------------------------

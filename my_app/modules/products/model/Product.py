@@ -20,7 +20,7 @@ class Product (db.Model):
     category_id = db.Column (db.Integer, db.ForeignKey('categories.id'), nullable=False)
     file        = db.Column (db.String(200))
     created     = db.Column (db.DateTime(timezone=False), nullable=False, default=datetime.utcnow())
-    deleted     = db.Column (db.Integer)
+    deleted     = db.Column (db.Integer,default=0)
 
     def __init__(self, sku, name, description, brand, price, category_id, file, deleted):
         self.sku            = sku

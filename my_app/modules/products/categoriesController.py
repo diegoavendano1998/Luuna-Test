@@ -1,5 +1,6 @@
 from my_app import app,db,ALLOWED_EXTENSION_FIELDS
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Blueprint
+from flask_login import login_required, current_user
 
 from werkzeug.wrappers import BaseRequest
 from werkzeug.utils import secure_filename
@@ -7,6 +8,7 @@ from werkzeug.wsgi import responder
 from werkzeug.exceptions import HTTPException, NotFound
 
 from my_app.modules.products.model.Category import Category, CategoryForm
+from my_app.modules.products.model.Alert import Alert
 
 import os
 from requests.auth import HTTPBasicAuth
@@ -19,6 +21,21 @@ import json
 categoriesBP = Blueprint('categories',__name__)
 
 
+
+@app.errorhandler(401)
+def notAuthorized(e):
+    # note that we set the 401 status explicitly
+    return render_template('handler/401.html'),401
+@app.errorhandler(413)
+def notAuthorized(e):
+    return render_template('handler/413.html'),413
+
+@categoriesBP.before_request
+@login_required
+def contstructor(code=1):
+    # if response.status_code == 401:
+    # print (current_user.username)
+    pass
 
 
 
@@ -40,7 +57,8 @@ def get_data():
 @categoriesBP.route('/Luuna/categories/')
 @categoriesBP.route('/Luuna/categories/<int:page>')
 def categories(page=1):
-    return render_template('categories/categories.html',categories=Category.query.paginate(page,6))
+    alerts = Alert.query.order_by(Alert.id.desc()).all()
+    return render_template('categories/categories.html',categories=Category.query.paginate(page,6),alerts=alerts)
 
 
 # Create category
@@ -95,12 +113,16 @@ def update(id):
 # Delete category
 @categoriesBP.route('/Luuna/delete-category/<int:id>')
 def delete(id):
-    # Send request to API
-    r = json.loads(requests.delete('http://0.0.0.0:5000/api/categories/'+str(id),auth = HTTPBasicAuth('luuna', 'test2021')).content)
-    if r['code'] == 200:
-        flash('Categoría eliminada satisfactoriamente','success')
-    else:
-        flash(r['message'],'danger')
+    # Send request to API. Try block because is FK and cant delete with child rows
+    try:
+        r = json.loads(requests.delete('http://0.0.0.0:5000/api/categories/'+str(id),auth = HTTPBasicAuth('luuna', 'test2021')).content)
+        if r['code'] == 200:
+            flash('Categoría eliminada satisfactoriamente','success')
+        else:
+            flash(r['message'],'danger')
+        return redirect(url_for('categories.categories'))
+    except:
+        flash('Algo paso, por favor asegurate que la categoria este completamente vacia','danger')
     return redirect(url_for('categories.categories'))
 
 

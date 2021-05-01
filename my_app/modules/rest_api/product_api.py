@@ -1,7 +1,9 @@
 from flask.views import MethodView
 from flask import request, abort
+from flask_login import LoginManager, login_required, current_user
 # from werkzeug import abort
 from my_app.modules.products.model.Product import Product, ProductForm
+from my_app.modules.products.model.Alert import Alert
 from my_app.modules.rest_api.helper.request import responseJSON
 from my_app import app, db
 import json
@@ -27,8 +29,10 @@ class ProductAPI(MethodView):
     def delete(self, id):
         if id:
             product = Product.query.get(id)
+            alert = Alert(product.name+" ha sido eliminado",0)
             if not product:
                 return responseJSON(None,"Parametros invalidos (id)",403)
+            db.session.add(alert)
             db.session.delete(product)
             db.session.commit()
             return responseJSON("Prodcuto eliminado",None,200)
@@ -81,11 +85,13 @@ class ProductAPI(MethodView):
 
         # Add product
         p = Product(request.form['sku'],request.form['name'],request.form['description'],request.form['brand'],request.form['price'],request.form['category_id'],request.form['file'],0)
+        alert = Alert(request.form['name']+" ha sido añadido.",0)
         db.session.add(p)
+        db.session.add(alert)
         db.session.commit()
         return responseJSON(productToJSON(p),None,200) 
 
-
+    # Edit product
     def put(self, id):
         if id:
             product = Product.query.get(id)
@@ -135,8 +141,35 @@ class ProductAPI(MethodView):
             except ValueError:
                 return responseJSON(None,"Parametros invalidos (category_id)",403)
 
+
             
-            # Crear producto
+            #Check for changes
+            if product.sku != request.form['sku']:
+                alertSku=Alert(product.name+" cambio el sku a "+request.form['sku'],0)
+                db.session.add(alertSku)
+                db.session.commit()
+            if product.name != request.form['name']:
+                alertName=Alert(product.name+" cambio el nombre a "+request.form['name'],0)
+                db.session.add(alertName)
+                db.session.commit()
+            if product.description != request.form['description']:
+                alertDesc=Alert(product.name+" cambio ls descripcción a "+request.form['description'],0)
+                db.session.add(alertDesc)
+                db.session.commit()
+            if product.brand != request.form['brand']:
+                alertBrand=Alert(product.name+" cambio la marca a "+request.form['brand'],0)
+                db.session.add(alertBrand)
+                db.session.commit()
+            if product.price != request.form['price']:
+                alertPrice=Alert(product.name+" cambio el precio a $"+request.form['price'],0)
+                db.session.add(alertPrice)
+                db.session.commit()
+            if product.category_id != request.form['category_id']:
+                alertCategory=Alert(product.name+" cambio la categoría a "+request.form['category_id'],0)
+                db.session.add(alertCategory)
+                db.session.commit()
+            
+            # Create product
             product.sku         = request.form['sku']
             product.name        = request.form['name']
             product.description = request.form['description']

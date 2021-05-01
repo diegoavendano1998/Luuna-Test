@@ -3,25 +3,25 @@
     <a href="#" class="menu-toggle text-white">
         <i class="fas fa-bars"></i>
     </a>
-    <a href="#" class="navbar-brand navbar-tilte"><i class="fas fa-bolt"></i> <span>Admin</span></a>
+    <a href="#" class="navbar-brand navbar-tilte"><i class="fas fa-bolt"></i> <span>Luuna Test</span></a>
     </header>
     <nav class="dash-nav-list">
-    <a href="index.html" class="dash-nav-item">
-        <i class="fas fa-home"></i> Dashboard </a>
-    <div class="dash-nav-dropdown">
-        <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
-            <i class="fas fa-list"></i> Productos </a>
-        <div class="dash-nav-dropdown-menu">
-            <a href="{{ url_for('products.products') }}" class="dash-nav-dropdown-item">Productos</a>
-            <a href="{{ url_for('categories.categories') }}" class="dash-nav-dropdown-item">Categorias</a>
+        <a href="{{ url_for('products.dashboard') }}" class="dash-nav-item"><i class="fas fa-home"></i> Dashboard </a>
+        <div class="dash-nav-dropdown">
+            <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+                <i class="fas fa-list"></i> Productos </a>
+            <div class="dash-nav-dropdown-menu">
+                <a href="{{ url_for('products.products') }}" class="dash-nav-dropdown-item">Productos</a>
+                <a href="{{ url_for('categories.categories') }}" class="dash-nav-dropdown-item">Categorias</a>
+            </div>
         </div>
-    </div>
-    <div class="dash-nav-dropdown ">
-        <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
-            <i class="fas fa-user"></i> Usuarios </a>
-        <div class="dash-nav-dropdown-menu">
-            <a href="{{ url_for('users.users') }}" class="dash-nav-dropdown-item">Usuarios</a>
+        <div class="dash-nav-dropdown ">
+            <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
+                <i class="fas fa-user"></i> Usuarios </a>
+            <div class="dash-nav-dropdown-menu">
+                <a href="{{ url_for('users.users') }}" class="dash-nav-dropdown-item">Usuarios</a>
+            </div>
         </div>
-    </div>
+        <a href="{{ url_for('store.store') }}" class="dash-nav-item"><i class="fas fa-store"></i> Store </a>
     </nav>
 </div>

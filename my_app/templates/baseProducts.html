@@ -95,42 +95,38 @@
         <script>
         window.onload = function(){
             $('#deleteModal').on('show.bs.modal', function (event) {
-            console.log("delete");
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var name = button.data('name') // Referencia a la data
-            var id = button.data('id') // Referencia a la data
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
-            $("#deleteProduct").attr("href","/Luuna/delete-product/"+id)
-        }) 
-        }   
-        window.onload = function(){
+                console.log("delete");
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var name = button.data('name') // Referencia a la data
+                var id = button.data('id') // Referencia a la data
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+                modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
+                $("#deleteProduct").attr("href","/Luuna/delete-product/"+id)
+            }) 
             $('#deleteCategoryModal').on('show.bs.modal', function (event) {
-            console.log("delete");
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var name = button.data('name') // Referencia a la data
-            var id = button.data('id') // Referencia a la data
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
-            $("#deleteCategory").attr("href","/Luuna/delete-category/"+id)
-        })
-        }    
-        window.onload = function(){
+                console.log("delete");
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var name = button.data('name') // Referencia a la data
+                var id = button.data('id') // Referencia a la data
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+                modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
+                $("#deleteCategory").attr("href","/Luuna/delete-category/"+id)
+            })
             $('#deleteUserModal').on('show.bs.modal', function (event) {
-            console.log("delete");
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var name = button.data('username') // Referencia a la data
-            var id = button.data('id') // Referencia a la data
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            var modal = $(this)
-            modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
-            $("#deleteUser").attr("href","/Luuna/delete-user/"+id)
-        })    
+                console.log("delete");
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var name = button.data('username') // Referencia a la data
+                var id = button.data('id') // Referencia a la data
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+                modal.find('.modal-title span').text(name) // Pasarle el nombre al modal-title
+                $("#deleteUser").attr("href","/Luuna/delete-user/"+id)
+            })    
         }
         </script>
         

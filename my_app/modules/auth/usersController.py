@@ -1,5 +1,6 @@
 from my_app import app,db
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Blueprint
+from flask_login import login_required, current_user
 
 from werkzeug.wrappers import BaseRequest
 from werkzeug.utils import secure_filename
@@ -7,6 +8,7 @@ from werkzeug.wsgi import responder
 from werkzeug.exceptions import HTTPException, NotFound
 
 from my_app.modules.auth.model.user import User, UserForm, Role
+from my_app.modules.products.model.Alert import Alert
 
 import os
 from requests.auth import HTTPBasicAuth
@@ -19,6 +21,20 @@ import json
 usersBP = Blueprint('users',__name__)
 
 
+@app.errorhandler(401)
+def notAuthorized(e):
+    # note that we set the 401 status explicitly
+    return render_template('handler/401.html'),401
+@app.errorhandler(413)
+def notAuthorized(e):
+    return render_template('handler/413.html'),413
+
+@usersBP.before_request
+@login_required
+def contstructor(code=1):
+    # if response.status_code == 401:
+    # print (current_user.username)
+    pass
 
 
 
@@ -40,7 +56,8 @@ def get_data():
 @usersBP.route('/Luuna/users/')
 @usersBP.route('/Luuna/users/<int:page>')
 def users(page=1):
-    return render_template('users/users.html',users=User.query.paginate(page,100))
+    alerts = Alert.query.order_by(Alert.id.desc()).all()
+    return render_template('users/users.html',users=User.query.paginate(page,100),alerts=alerts)
 
 
 # Create user

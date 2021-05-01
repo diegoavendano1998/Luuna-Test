@@ -1,5 +1,7 @@
-from my_app import app,db,ALLOWED_EXTENSION_FIELDS
+from my_app import app,db,ALLOWED_EXTENSION_FIELDS, check_admin
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Blueprint
+from flask_login import login_required, current_user
+from flask_user import roles_required
 
 from werkzeug.wrappers import BaseRequest
 from werkzeug.utils import secure_filename
@@ -8,6 +10,8 @@ from werkzeug.exceptions import HTTPException, NotFound
 
 from my_app.modules.products.model.Product import Product, ProductForm
 from my_app.modules.products.model.Category import Category, CategoryForm
+from my_app.modules.products.model.Alert import Alert
+from my_app.modules.products.model.Track import Track
 
 import os
 from requests.auth import HTTPBasicAuth
@@ -19,6 +23,23 @@ import json
 
 productsBP = Blueprint('products',__name__)
 
+
+
+@app.errorhandler(401)
+def notAuthorized(e):
+    # note that we set the 401 status explicitly
+    return render_template('handler/401.html'),401
+@app.errorhandler(413)
+def notAuthorized(e):
+    return render_template('handler/413.html'),413
+
+@productsBP.before_request
+@login_required
+@check_admin
+def contstructor(code=1):
+    # if response.status_code == 401:
+    # print (current_user.username)
+    pass
 
 
 
@@ -40,12 +61,22 @@ def get_data():
 
 
 
+# Dashboard and tracks
+@productsBP.route('/Luuna/dashboard/')
+def dashboard(page=1):
+    alerts = Alert.query.order_by(Alert.id.desc()).all()
+    return render_template('products/dashboard.html',tracks=Track.query.paginate(page,4), alerts=alerts)
+
+
+
+
 # List all products
 @productsBP.route('/Luuna/products/')
 @productsBP.route('/Luuna/products/<int:page>')
 def products(page=1):
     products = Product.query.all()
-    return render_template('products/products.html',products=Product.query.paginate(page,4))
+    alerts = Alert.query.order_by(Alert.id.desc()).all()
+    return render_template('products/products.html',products=Product.query.paginate(page,4), alerts=alerts)
 
 
 # Create product
@@ -141,7 +172,6 @@ def delete(id):
     else:
         flash(r['message'],'danger')
     return redirect(url_for('products.products'))
-
 
 
     
