@@ -132,7 +132,7 @@ Las librerias utilizadas son :
 
 ## Proyecto desplegado
 Para ver el proyecto desplegado puedes entrar a la url: http://diegoab.ddns.net/Luuna/store/
-Usuarios:
+# Usuarios:
 - username : admin-luuna , password : ZeBrands$
 - username : regular-luuna , password : ZeBrands$
 
