@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 [![N|Solid](https://www.eluniversal.com.mx/descuentos/static/shop/32021/logo/Luuna_Cupon.jpg)]()
 # Backend Technical Test    
 ## REST API / Products aplication
@@ -143,7 +143,3 @@ Usuarios:
 Diego Avendaño, 2021
 
 **Free Software, Hell Yeah!**
-=======
-# Luuna-Test
-Backend Technical Test
->>>>>>> 63dce727e3c93b895c2d1ee3e64244be7cab640c
